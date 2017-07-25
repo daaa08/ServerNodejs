@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">ServerNodejs</string>
     <string name="btnWrite">write</string>
+    <string name="btnInput">Input</string>
 </resources>

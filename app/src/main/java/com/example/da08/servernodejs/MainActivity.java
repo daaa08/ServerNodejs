@@ -1,9 +1,11 @@
 package com.example.da08.servernodejs;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Button;
 
 import com.google.gson.Gson;
@@ -17,10 +19,6 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.http.DELETE;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.PUT;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,17 +44,25 @@ public class MainActivity extends AppCompatActivity {
     private void initView() {
         btnWrite = (Button) findViewById(R.id.btnWrite);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+
+        btnWrite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent  =new Intent(MainActivity.this,WriteActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void loader(){
         // 1 레트로핏 생성
         Retrofit client = new Retrofit.Builder()
-                .baseUrl(MyServer.SERVER)
+                .baseUrl(Ibbs.SERVER)
 //                .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
         // 2 서비스 연결
-        MyServer myServer = client.create(MyServer.class);
+        Ibbs myServer = client.create(Ibbs.class);
         // 3 서비스의 특정 함수 호출 -> Observable 생성
         Observable<ResponseBody> observable = myServer.read();
 
@@ -66,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(
                         responseBody -> {
                             // 데이터를 꺼내고
-//                            Log.e("retrofit", "datas:"+responseBody.string());
                             String jsonString = responseBody.string();
+//                            Log.e("retrofit", "datas:"+responseBody.string());
                             Gson gson = new Gson();
 //                            Type type = new TypeToken<List<Bbs>>(){}.getType(); // 컨버팅하기 위한 타입 지정
 //                            gson.fromJson(jsonString, Bbs.class);
@@ -82,20 +88,5 @@ public class MainActivity extends AppCompatActivity {
                 );
     }
 
-    interface MyServer{   // Ibbs
-        public static final String SERVER = "http://192.168.10.253:8080/";
 
-        @GET("bbs")
-        public Observable<ResponseBody> read();
-        @POST("bbs")
-        public void write(Bbs bbs);
-        @PUT("bbs")
-        public void update(Bbs bbs);
-        @DELETE("bbs")
-        public void delete(Bbs bbs);
-    }
-
-    interface Iuser{
-
-    }
 }
