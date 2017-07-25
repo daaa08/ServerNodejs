@@ -14,7 +14,7 @@ import retrofit2.http.PUT;
  */
 
 public interface Ibbs {
-        public static final String SERVER = "http://192.168.10.253:8080/";
+        public static final String SERVER = "http://192.168.0.13:8080/";
 
         @GET("bbs")
         public Observable<ResponseBody> read();

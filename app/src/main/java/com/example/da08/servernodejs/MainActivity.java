@@ -27,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
     private List<Bbs> datas = new ArrayList<>();
     private RecyclerAdapter adapter;
 
+    public final int REQUEST_CODE = 1234;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,10 +51,24 @@ public class MainActivity extends AppCompatActivity {
         btnWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /*
+                 호출시 startActivity를 사용하면 onResume 처리를 따로 해줘야한다 때문에 다른걸 사용해서 호출해보기
+                 */
                 Intent intent  =new Intent(MainActivity.this,WriteActivity.class);
-                startActivity(intent);
+//                startActivity(intent);
+                startActivityForResult(intent,REQUEST_CODE);
+
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE){
+            this.datas.clear();
+            loader();
+        }
     }
 
     private void loader(){
