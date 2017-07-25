@@ -9,6 +9,17 @@ import android.widget.Button;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.DELETE;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button btnWrite;
@@ -20,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        lambdaTest();
         initView();
         datas = new ArrayList<>();
         adapter = new RecyclerAdapter(this,datas);
@@ -29,14 +39,47 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//    private void lambdaTest() {
-//        new Thread(
-//                () -> Log.i("Labmda", "-===========================-")
-//        ).start();
-//    }
-
     private void initView() {
         btnWrite = (Button) findViewById(R.id.btnWrite);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+    }
+
+    private void loader(){
+        // 1 레트로핏 생성
+        Retrofit client = new Retrofit.Builder()
+                .baseUrl(MyServer.SERVER)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
+        // 2 서비스 연결
+        MyServer myServer = client.create(MyServer.class);
+        // 3 서비스의 특정 함수 호출 -> Observable 생성
+        Observable<Bbs> observable = myServer.read();
+
+        // 4 subscribe 등록
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        datas -> {
+                            // 데이터를 꺼내고
+
+                            // 아답터에 세팅
+
+                            // 아답터 갱신
+                        }
+                );
+    }
+
+    interface MyServer{
+        public static final String SERVER = "http://192.168.10.253/";
+
+        @GET("bbs")
+        public Observable<Bbs> read();
+        @POST("bbs")
+        public void write(Bbs bbs);
+        @PUT("bbs")
+        public void update(Bbs bbs);
+        @DELETE("bbs")
+        public void delete(Bbs bbs);
     }
 }
