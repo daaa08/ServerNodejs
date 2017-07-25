@@ -25,7 +25,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
 
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item,parent,false);
         return new Holder(view);
     }
 
@@ -33,9 +33,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
     public void onBindViewHolder(Holder holder, int position) {
         Bbs bbs = datas.get(position);
 
-//        holder.textView1.setText(datas.get(position).id);
-        holder.textView2.setText(datas.get(position).title);
-        holder.textView3.setText(datas.get(position).author);
+        holder.textView5.setText(datas.get(position).title);
+        holder.textView6.setText(datas.get(position).author);
         holder.setDate(bbs.date);
 
     }
@@ -46,18 +45,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
     }
 
     class Holder extends RecyclerView.ViewHolder{
-        TextView textView1,textView2,textView3,textView4;
+        TextView textView,textView5,textView6;
 
         public Holder(View itemView) {
             super(itemView);
-            textView1 = (TextView)itemView.findViewById(R.id.textView1);
-            textView2 = (TextView)itemView.findViewById(R.id.textView2);
-            textView3 = (TextView)itemView.findViewById(R.id.textView3);
-            textView4 = (TextView)itemView.findViewById(R.id.textView4);
+
+            textView = (TextView)itemView.findViewById(R.id.textView);
+            textView5 = (TextView)itemView.findViewById(R.id.textView5);
+            textView6 = (TextView)itemView.findViewById(R.id.textView6);
         }
 
         public void setDate(String date){
-            textView4.setText(date);
+            textView.setText(date);
         }
     }
 }
