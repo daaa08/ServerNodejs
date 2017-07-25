@@ -33,9 +33,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
     public void onBindViewHolder(Holder holder, int position) {
         Bbs bbs = datas.get(position);
 
-        holder.textView1.setText(bbs.id);
-        holder.textView2.setText(bbs.title);
-        holder.textView3.setText(bbs.author);
+//        holder.textView1.setText(datas.get(position).id);
+        holder.textView2.setText(datas.get(position).title);
+        holder.textView3.setText(datas.get(position).author);
         holder.setDate(bbs.date);
 
     }
