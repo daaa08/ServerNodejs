@@ -1,5 +1,6 @@
 package com.example.da08.servernodejs;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
@@ -87,13 +88,16 @@ public class WriteActivity extends AppCompatActivity {
 
                             위의 두 가지를 구분해서 결과값을 호출한 MainActivity로 넘겨서 처리
                              */
-                                finish();
+                                setResult(Activity.RESULT_OK);
+                                finish();  // finish가 되었을때만 onActivityForResult가 호출
 
                             }
                     );
         }
 
     }
+
+
 
     private void initView() {
         editTitle = (EditText) findViewById(R.id.editTitle);

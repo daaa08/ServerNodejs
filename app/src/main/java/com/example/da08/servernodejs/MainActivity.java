@@ -1,5 +1,6 @@
 package com.example.da08.servernodejs;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Bbs> datas = new ArrayList<>();
     private RecyclerAdapter adapter;
 
-    public final int REQUEST_CODE = 1234;
+    public static final int REQUEST_CODE = 1234;
 
 
     @Override
@@ -65,9 +66,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_CODE){
-            this.datas.clear();
-            loader();
+        if(resultCode == Activity.RESULT_OK){  // 보통 실패는 0 성공은 1 -> requestCode == 1 이라고 쓰는 경우가 많음
+            switch (requestCode){
+                case REQUEST_CODE :
+                    this.datas.clear();
+                    loader();
+                    break;
+            }
+//            this.datas.clear();
+//            loader();
         }
     }
 
